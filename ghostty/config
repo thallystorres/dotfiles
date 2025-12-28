@@ -1,0 +1,28 @@
+# theme
+theme = kanagawa-wave
+# Font
+font-family = JetBrains Mono
+font-size = 16
+# Disable Ligatures completely
+#font-feature = -calt
+#font-feature = -dlig
+#font-feature = -liga
+
+# Mouse
+mouse-hide-while-typing = true
+
+# Window
+gtk-single-instance = true
+gtk-tabs-location = bottom
+gtk-wide-tabs = false
+window-padding-x = 16,8
+window-padding-y = 0,0
+window-padding-balance = true
+window-decoration = true
+window-theme = ghostty
+background-opacity = 0.9
+
+# Other
+copy-on-select = clipboard
+cursor-style = block
+cursor-style-blink = true
