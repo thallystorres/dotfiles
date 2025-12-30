@@ -1,5 +1,5 @@
-#!/bin/sh
-# vim: set filetype=sh :
+#!/usr/bin/env zsh
+# vim: set filetype=zsh :
 
 # This will load all the other files
 source "${HOME}/dotfiles/zsh/config/use_this_to_load"
