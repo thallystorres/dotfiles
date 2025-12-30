@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# vim: set filetype=zsh :
+
+export KEYTIMEOUT=30
+export EDITOR="nvim"
+export VISUAL="nvim"
+export TABSIZE=2
+export SSH_TERM="xterm-256color"
+
+# bat
+export BAT_STYLE="header"
+
+# fzf
+export FZF_DEFAULT_OPTS='
+  --color=fg:#dadada,fg+:#ffffff,bg:#000000,bg+:#3a3a3a
+  --color=hl:#afffaf,hl+:#00ff5f,info:#00ff87,marker:#00ff5f
+  --color=prompt:#dadada,spinner:#00ff87,pointer:#00ff87,header:#00ff87
+  --color=gutter:#121212,border:#121212,separator:#808080,scrollbar:#808080
+  --color=label:#dadada,query:#dadada
+  --preview-window=border-rounded
+  --layout=reverse
+'
+
+# Pyenv (base only)
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
+# Local env
+[[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"

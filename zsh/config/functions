@@ -1,0 +1,189 @@
+#!/usr/bin/env zsh
+# vim: set filetype=zsh :
+
+# Reset
+RESET='\033[0m'
+
+# Average font
+BLACK='\033[0;30m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+
+# Bold or bright
+BRIGHT_BLACK='\033[1;30m'
+BRIGHT_RED='\033[1;31m'
+BRIGHT_GREEN='\033[1;32m'
+BRIGHT_YELLOW='\033[1;33m'
+BRIGHT_BLUE='\033[1;34m'
+BRIGHT_MAGENTA='\033[1;35m'
+BRIGHT_CYAN='\033[1;36m'
+BRIGHT_WHITE='\033[1;37m'
+
+# Colorful logs
+log() {
+  printf "${CYAN}%s${RESET}\n" "$1"
+}
+
+loginfo() {
+  log "🔵 $1"
+}
+
+logsuccess() {
+  printf "🟢 ${GREEN}%s${RESET}\n" "$1"
+}
+
+logwarning() {
+  printf "🟡 ${YELLOW}%s${RESET}\n" "$1"
+}
+
+logerror() {
+  printf "🔴 ${RED}%s${RESET}\n" "$1"
+}
+
+
+function dtouch() {
+  mkdir -p "$(dirname "$1")"
+  touch "$1"
+}
+
+function memuse() {
+  ps -A -o rss,comm | grep -E "$1" | grep -v grep | awk '{ sum += $1 } END { printf "%.2f MB\n", sum / 1024 }'
+}
+
+function delpythoncache() {
+    echo "Cleaning cache..."
+
+    type deactivate &>/dev/null && deactivate
+
+    find . -type d \( -name "__pycache__" -o -name ".pytest_cache" -o -name ".tox" -o -name "*.egg-info" -o -name "build" -o -name "dist" \) -exec rm -r {} \;
+    find . -type f \( -name "*.pyc" -o -name "*.pyo" \) -delete
+
+    echo "Success!"
+}
+
+restart_terminal() {
+  fc -W
+  . $HOME/.zshrc
+  tmux respawn-window -k
+}
+
+
+function gitconfig() {
+  set -e errexit
+
+  log "Your name:"
+  read NAME
+
+  log "Your e-mail:"
+  read EMAIL
+
+  log
+
+  log "Command: git init"
+  git init
+
+  log "Command: git config user.name \"${NAME}\""
+  git config user.name "${NAME}"
+
+  log "Command: git config user.email \"${EMAIL}\""
+  git config user.email "${EMAIL}"
+
+  log "Command: git branch -m main"
+  git branch -m main
+
+  log "Command: git config core.autocrlf input"
+  git config core.autocrlf input
+
+  log "Command: git config core.eol lf"
+  git config core.eol lf
+
+  log "Command: git config --list --local"
+}
+
+function tmux_respawn_all() {
+  echo "Cleaning Tmux Resurrect"
+  fc -W
+  . $HOME/.zshrc
+  cleanNeovimLogs
+
+  $HOME/dotfiles/scripts/zsh_history_sync.py
+
+
+  rm -Rf $HOME/.local/share/tmux/resurrect/*.*
+  rm -Rf $HOME/.local/share/tmux/resurrect/last
+
+  echo "Saving sessions"
+  $HOME/.tmux/plugins/tmux-resurrect/scripts/save.sh
+
+  echo "Tmux resurrect clean!"
+  sleep 2
+
+  for pane in $(tmux list-panes -a -F '#D'); do
+    tmux respawn-pane -k -t $pane;
+  done
+
+  sleep 2
+
+  echo "Saving sessions again..."
+  $HOME/.tmux/plugins/tmux-resurrect/scripts/save.sh
+}
+
+function cleanNeovimLogs() {
+  echo "🧼 Cleaning neovim log and cache..."
+
+  [[ -d $HOME/.local/state/nvim ]] && rm ~/.local/state/nvim/*.log
+  [[ -d $HOME/.cache/nvim ]] && {
+      rm ~/.cache/nvim/*.log
+      rm -r $HOME/.cache/nvim/shada
+      rm -r $HOME/.cache/nvim/sessions
+  }
+  echo "✅ Neovim clean!"
+}
+
+tmuxns() {
+  local session_name="$1"
+  shift
+
+  tmux new-session -d -s $session_name -c "$(pwd)"
+
+  for arg in "$@"; do
+    tmux new-window -t $session_name -n $arg -c "$(pwd)"
+  done
+}
+
+function tmux_run_all_panes() {
+  for window in $(tmux list-panes -a -F "#D"); do
+    tmux send-keys -t $window $@ C-m
+  done
+}
+
+function clear_all () {
+  tmux clear-history
+  printf '\e[H\e[2J\e[3J'
+}
+
+# Lazy-loads
+
+# NVM
+nvm() {
+  unset -f nvm node npm npx
+  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+  nvm "$@"
+}
+
+node() { nvm; node "$@"; }
+npm()  { nvm; npm "$@"; }
+npx()  { nvm; npx "$@"; }
+
+# Pyenv
+pyenv() {
+  unset -f pyenv
+  command -v pyenv >/dev/null || return 1
+  eval "$(command pyenv init -)"
+  pyenv "$@"
+}

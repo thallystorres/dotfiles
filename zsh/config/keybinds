@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# vim: set filetype=zsh :
+
+bindkey -v
+bindkey -M viins jj vi-cmd-mode
+
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+function zle-line-init zle-keymap-select {
+  if [[ $KEYMAP == vicmd ]]; then
+    echo -ne '\e[2 q'  # Block (NORMAL)
+    VIM_PROMPT_SYMBOL="❮"
+    VIM_PROMPT_FG_COLOR="%F{9}"
+    VIM_PROMPT_BG_COLOR=""
+  else
+    echo -ne '\e[6 q'  # Line (INSERT)
+    VIM_PROMPT_SYMBOL="❯"
+    VIM_PROMPT_FG_COLOR="%F{10}"
+    VIM_PROMPT_BG_COLOR=""
+  fi
+  zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select

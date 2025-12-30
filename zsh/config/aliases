@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+# vim: set filetype=zsh :
+
+alias gitlog='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+
+# Reload
+alias zs='source ~/.zshrc'
+
+# Package managers (Fedora-first)
+dinst() {
+  if command -v dnf >/dev/null; then
+    sudo dnf install "$@"
+  elif command -v apt >/dev/null; then
+    sudo apt install "$@"
+  fi
+}
+
+upd() {
+  command -v dnf >/dev/null && sudo dnf upgrade --refresh
+}
+
+# Safer overrides
+cat() {
+  command -v batcat >/dev/null && batcat "$@" || command cat "$@"
+}
+
+cd() {
+  command -v z >/dev/null && z "$@" || builtin cd "$@"
+}
+
+find() {
+  command -v fdfind >/dev/null && fdfind "$@" || command find "$@"
+}
+
+df() {
+  command -v duf >/dev/null && duf "$@" || command df "$@"
+}
+
+du() {
+  command -v ncdu >/dev/null && ncdu "$@" || command du "$@"
+}
+# Tools
+command -v eza >/dev/null && {
+  EZA_OPTS="--icons --group-directories-first --color-scale=all --color-scale-mode=gradient"
+  alias ls="eza $EZA_OPTS"
+  alias lsl="eza $EZA_OPTS -l --git -h"
+  alias lsa="eza $EZA_OPTS -a"
+  alias lsla="eza $EZA_OPTS -al --git -h"
+}
+
+alias ..='z ..'
+
+command -v fastfetch >/dev/null && alias ff='fastfetch'
+command -v micro >/dev/null && alias nano='micro'
+
+alias mkdir='mkdir -pv'
+
+# Tree ignore .git, __pycache__, node_modules, .venv, dist, .DS_Store
+alias tr="tree -C -I '__pycache__|node_modules|.git|.venv|dist|.DS_Store|*.egg*'"
+
+# Misc
+alias aliasconf='micro ~/dotfiles/zsh/config/aliases'
