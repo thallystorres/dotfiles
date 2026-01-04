@@ -47,8 +47,10 @@ logerror() {
 
 
 function dtouch() {
-  mkdir -p "$(dirname "$1")"
-  touch "$1"
+  for file in "$@"; do
+    mkdir -p "${file:h}"
+    touch "$file"
+  done
 }
 
 function memuse() {
