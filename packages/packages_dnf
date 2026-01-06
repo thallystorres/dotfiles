@@ -1,5 +1,5 @@
 lua
-liblua-devel
+lua-devel
 unzip
 luarocks
 ripgrep
