@@ -38,20 +38,17 @@ logwarn() {
 PACKAGER=""
 INSTALL_CMD=""
 UPDATE_CMD=""
-GHOSTTY_CMD=""
 
 if command -v dnf >/dev/null 2>&1; then
   loginfo "RPM based system detected (Fedora/RHEL)"
   PACKAGER="dnf"
   INSTALL_CMD="sudo dnf install -y"
   UPDATE_CMD="sudo dnf upgrade --refresh -y"
-  GHOSTTY_CMD="sudo bash -c 'loginfo Installing Ghostty with dnf && dnf install -y dnf-plugins-core && dnf copr enable -y pgdev/ghostty && dnf install -y ghostty'"
 elif command -v apt >/dev/null 2>&1; then
   loginfo "Debian based system detected (Ubuntu/Pop/Mint)."
   PACKAGER="apt"
   INSTALL_CMD="sudo apt install -y"
   UPDATE_CMD="sudo apt update && sudo apt upgrade -y"
-  GHOSTTY_CMD="sudo bash -c 'apt update && apt install -y curl ca-certificates gnupg && curl -fsSL https://repo.ghostty.org/apt/gpg.key | gpg --dearmor -o /usr/share/keyrings/ghostty.gpg && echo "deb [signed-by=/usr/share/keyrings/ghostty.gpg] https://repo.ghostty.org/apt stable main" > /etc/apt/sources.list.d/ghostty.list && apt update && apt install -y ghostty'"
 else
   logerror "Package manager not supported. Exiting script."
   exit 1
@@ -130,7 +127,39 @@ fi
 # 5. Ghostty config
 # ==========================================
 
-eval $GHOSTTY_CMD
+install_ghostty() {
+  if command -v ghostty >/dev/null 2>&1; then
+    loginfo "Ghostty already installed..."
+    return
+  fi
+
+  loginfo "Installing Ghostty..."
+
+  if [ "$PACKAGER" == "dnf" ]; then
+    # dnf based
+    loginfo "Setting COPR for Ghostty (Fedora)..."
+    sudo dnf copr enable -y pgdev/ghostty
+    sudo dnf install -y ghostty
+
+  elif [ "$PACKAGER" == "apt" ]; then
+    # apt based
+    loginfo "Setting Ghostty repository (Debian based)..."
+    KEYRING="/usr/share/keyrings/ghostty.gpg"
+    if [ ! -f "$KEYRING" ]; then
+      loginfo "Downloading GPG Key..."
+      curl -fsSL https://repo.ghostty.org/apt/gpg.key | sudo gpg --dearmor -o "$KEYRING"
+    fi
+    LIST_FILE="/etc/apt/sources.list.d/ghostty.list"
+    if [ ! -f "$LIST_FILE" ]; then
+      loginfo "Adding source list..."
+      echo "deb [signed-by=$KEYRING] https://repo.ghostty.org/apt stable main" | sudo tee "$LIST_FILE" > /dev/null
+    fi
+    sudo apt update
+    sudo apt install -y ghostty
+  fi
+}
+
+install_ghostty
 
 # ==========================================
 # 6. Zsh config

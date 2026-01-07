@@ -1,4 +1,5 @@
 zsh
+dnf-plugins-core
 lua
 lua-devel
 unzip

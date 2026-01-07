@@ -1,4 +1,6 @@
 zsh
+ca-certificates
+gnupg
 lua5.4
 liblua5.4-dev
 unzip
