@@ -27,3 +27,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 
 # Local env
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+# Homebrew
+PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
+ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

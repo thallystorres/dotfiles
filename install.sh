@@ -210,21 +210,6 @@ else
   loginfo "NVM already installed..."
 fi
 
-echo -e "
-[1;33mAttention: Manual steps ahead:[0m"
-echo ""
-echo "Open another terminal - DO NOT USE THIS INSTACE"
-echo ""
-echo "1. Execute 'nvm install --lts'"
-echo "2. Execute 'nvm install-latest-npm'"
-echo "3. Execute 'npm i -g prettier'"
-echo "4. Execute 'pyenv install 3.14' (or latest version)"
-echo "5. Execute 'pyenv global 3.14' (or latest version)"
-echo "6. Execute 'uv tool install pyright'"
-echo "7. Execute 'uv tool install ruff'"
-echo ""
-read -p "When you are done with the above tasks, press any key to continue..."
-
 # ==========================================
 # 10. Dotfiles Links (NO BACKUP)
 # ==========================================
@@ -260,34 +245,35 @@ link_file() {
 # Format: link_file "SOURCE" "DESTINATION"
 
 # ZSH
-link_file "$DOTFILES_DIR/dotfile/zsh/.zshrc" "$HOME/.zshrc"
-link_file "$DOTFILES_DIR/dotfile/zsh/.zprofile" "$HOME/.zprofile"
-
+link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+link_file "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
+rm -Rf "$ZSH_CUSTOM/themes/omtheme.zsh-theme"
+ln -sf "$HOME/dotfiles/zsh/config/omtheme.zsh-theme" "$ZSH_CUSTOM/themes/omtheme.zsh-theme"
 # Git
-link_file "$DOTFILES_DIR/dotfile/git/.gitconfig" "$HOME/.gitconfig"
+link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 
 # Tmux
-link_file "$DOTFILES_DIR/dotfile/tmux/.tmux.conf" "$HOME/.tmux.conf"
+link_file "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 # Tmux scripts (Ensure directory structure exists for scripts referenced in conf)
-mkdir -p "$HOME/dotfiles/dotfile/tmux/scripts" 
+mkdir -p "$HOME/dotfiles/tmux/scripts" 
 
 # Neovim
-link_file "$DOTFILES_DIR/dotfile/nvim" "$HOME/.config/nvim"
+link_file "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 
 # Ghostty
-link_file "$DOTFILES_DIR/dotfile/ghostty" "$HOME/.config/ghostty"
+link_file "$DOTFILES_DIR/ghostty" "$HOME/.config/ghostty"
 
 # Fastfetch
-link_file "$DOTFILES_DIR/dotfile/fastfetch" "$HOME/.config/fastfetch"
+link_file "$DOTFILES_DIR/fastfetch" "$HOME/.config/fastfetch"
 
 # VSCode (Linux)
 if [ -d "$HOME/.config/Code/User" ]; then
-    link_file "$DOTFILES_DIR/dotfile/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
-    link_file "$DOTFILES_DIR/dotfile/vscode/keybindings.json" "$HOME/.config/Code/User/keybindings.json"
+    link_file "$DOTFILES_DIR/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
+    link_file "$DOTFILES_DIR/vscode/keybindings.json" "$HOME/.config/Code/User/keybindings.json"
 fi
 
 # Vim
-link_file "$DOTFILES_DIR/dotfile/vim/.vimrc" "$HOME/.vimrc"
+link_file "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
 
 # ==========================================
 # 11. Finalization
