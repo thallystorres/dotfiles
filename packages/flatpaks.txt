@@ -2,7 +2,7 @@ app.zen_browser.zen
 com.bitwarden.desktop
 com.brave.Browser
 com.discordapp.Discord
-crest.insomnia.Insomnia
+rest.insomnia.Insomnia
 com.github.tchx84.Flatseal
 com.heroicgameslauncher.hgl
 com.rtosta.zapzap
