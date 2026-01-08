@@ -305,8 +305,33 @@ fi
 link_file "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
 
 # ==========================================
-# 11. Finalization
+# 11. Installing Linux Toys (eu te amo greg)
 # ==========================================
 
+curl -fsSL https://linux.toys/install.sh | bash
+
+# ==========================================
+# 12. GNOME keybindings Only
+# ==========================================
+
+if command -v dconf >/dev/null 2>&1;
+  KEYS_CONFIG="$DOTFILES_DIR/gnome/keybindings.ini"
+
+  if [ -f "$KEYS_CONFIG" ]; then
+    loginfo "Restoring GNOME keybindings..."
+
+    dconf load /org/gnome < "$KEYS_CONFIG"
+
+    logsuccess "keybindings restored!"
+    else
+      logwarn "keyrings file not found at $KEYS_CONFIG"
+  fi
+else
+  logwarn "dconf command not found. Skipping GNOME setup."
+fi
+
+# ==========================================
+# 13. Finalization
+# ==========================================
 
 loginfo "Installation complete! Restart your terminal or log out."

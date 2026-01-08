@@ -7,8 +7,5 @@ com.github.tchx84.Flatseal
 com.heroicgameslauncher.hgl
 com.rtosta.zapzap
 com.spotify.Client
-com.valvesoftware.Steam
 io.github.flattool.Warehouse
-io.github.thetumultuousunicornofdarkness.cpu-x
 io.missioncenter.MissionCenter
-org.vinegarhq.Sober
