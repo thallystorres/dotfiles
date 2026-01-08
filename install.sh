@@ -2,7 +2,7 @@
 
 # Initial config and log functions
 
-DOTFILES_DIR="$HOME/dotfiles"
+DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Adjust this path if your folder is named 'dotfiles/packages'
 PACKAGES_DIR="$DOTFILES_DIR/packages" 
 LOG_FILE="$DOTFILES_DIR/install.log"
@@ -237,6 +237,27 @@ if ! command -v nvm &> /dev/null; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 else
   loginfo "NVM already installed..."
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+loginfo "Installing Node LTS via NVM..."
+nvm install --lts
+nvm use --lts
+npm i -g prettier
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  loginfo "Installing Python 3.13..."
+  pyenv install 3.13.0
+  pyenv global 3.13.0
+fi
+
+if command -v uv 1>/dev/null 2>&1; then
+    uv tool install pyright
+    uv tool install ruff
 fi
 
 # ==========================================

@@ -21,10 +21,6 @@ export FZF_DEFAULT_OPTS='
   --layout=reverse
 '
 
-# Pyenv (base only)
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-
 # Local env
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 # Homebrew
