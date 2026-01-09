@@ -26,6 +26,7 @@ return {
           "tailwindcss",
           "rust_analyzer",
           "bashls",
+          "marksman",
         },
       })
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -74,6 +75,12 @@ return {
         capabilities = capabilities,
       })
       vim.lsp.enable("lua_ls")
+
+      vim.lsp.config("marksman", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("marksman")
 
       vim.lsp.config("tailwindcss", {
         on_attach = on_attach,
