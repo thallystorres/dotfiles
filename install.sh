@@ -3,7 +3,6 @@
 # Initial config and log functions
 
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# Adjust this path if your folder is named 'dotfiles/packages'
 PACKAGES_DIR="$DOTFILES_DIR/packages" 
 LOG_FILE="$DOTFILES_DIR/install.log"
 
@@ -95,7 +94,9 @@ if [ -f "$PACKAGES_DIR/Brewfile" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     
     # Add brew to path temporarily so the script can continue
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    if [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
   fi
   
   loginfo "Installing Brewfile packages..."
@@ -118,7 +119,10 @@ if [ -f "$PACKAGES_DIR/flatpaks.txt" ]; then
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
   loginfo "Installing Flatpaks..."
-  xargs -a "$PACKAGES_DIR/flatpaks.txt" flatpak install -y
+  # Check if file is not empty before running xargs
+  if [ -s "$PACKAGES_DIR/flatpaks.txt" ]; then
+      xargs -a "$PACKAGES_DIR/flatpaks.txt" flatpak install -y
+  fi
 else
   logwarn "Flatpak list not found."
 fi
@@ -169,7 +173,8 @@ install_ghostty
 if command -v zsh >/dev/null; then
   if [ "$SHELL" != "$(which zsh)" ]; then
     loginfo "Setting ZSH as default shell..."
-    chsh -s "$(which zsh)"
+    # Warning: simple chsh might ask for password or fail without sudo depending on config
+    sudo chsh -s "$(which zsh)" "$USER"
   fi
 fi
 
@@ -179,7 +184,7 @@ if [ ! -d "$HOME/.oh-my-zsh/" ]; then
   /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
   loginfo "Oh My Zsh already installed."
- fi
+fi
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 loginfo "🔌 Adding Zsh plugins..."
 if [ ! -d "${ZSH_CUSTOM}/plugins/zsh-autosuggestions" ]; then
@@ -215,8 +220,7 @@ fi
 # ==========================================
 
 if ! command -v pyenv &> /dev/null; then
-  # Pyenv e uv
-  loginfo "Installing Pyenv and uv..."
+  loginfo "Installing Pyenv..."
   rm -Rf "${HOME}/.pyenv"
   curl -fsSL https://pyenv.run | bash
 else
@@ -224,7 +228,6 @@ else
 fi
 
 if ! command -v uv &> /dev/null; then
-  # UV 
   loginfo "Installing uv..."
   curl -LsSf https://astral.sh/uv/install.sh | sh
 else
@@ -232,26 +235,35 @@ else
 fi
 
 if ! command -v nvm &> /dev/null; then
-  # NVM
+  loginfo "Installing NVM..."
   rm -Rf "${HOME}/.nvm"
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 else
   loginfo "NVM already installed..."
 fi
 
+# Load NVM for this session
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-loginfo "Installing Node LTS via NVM..."
-nvm install --lts
-nvm use --lts
-npm i -g prettier
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
+if command -v nvm >/dev/null 2>&1; then
+    loginfo "Installing Node LTS via NVM..."
+    nvm install --lts
+    nvm use --lts
+    npm i -g prettier
+fi
+
+# Load Pyenv for this session
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
   loginfo "Installing Python 3.13..."
-  pyenv install 3.13.0
+  # Check if version is already installed to save time
+  if ! pyenv versions | grep -q "3.13.0"; then
+      pyenv install 3.13.0
+  fi
   pyenv global 3.13.0
 fi
 
@@ -291,20 +303,20 @@ link_file() {
   logsuccess "Linked: $src -> $dest"
 }
 
-# File mapping
-# Format: link_file "SOURCE" "DESTINATION"
-
 # ZSH
 link_file "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
+
+# Specific Theme linking (Fixed path)
 rm -Rf "$ZSH_CUSTOM/themes/omtheme.zsh-theme"
-ln -sf "$HOME/dotfiles/zsh/config/omtheme.zsh-theme" "$ZSH_CUSTOM/themes/omtheme.zsh-theme"
+# Use DOTFILES_DIR instead of hardcoded $HOME/dotfiles
+ln -sf "$DOTFILES_DIR/zsh/config/omtheme.zsh-theme" "$ZSH_CUSTOM/themes/omtheme.zsh-theme"
+
 # Git
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 
 # Tmux
 link_file "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
-# Tmux scripts (Ensure directory structure exists for scripts referenced in conf)
 mkdir -p "$HOME/dotfiles/tmux/scripts" 
 
 # Neovim
@@ -329,23 +341,29 @@ link_file "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
 # 11. Installing Linux Toys (eu te amo greg)
 # ==========================================
 
+loginfo "Installing Linux Toys..."
 curl -fsSL https://linux.toys/install.sh | bash
 
 # ==========================================
 # 12. GNOME keybindings Only
 # ==========================================
 
-if command -v dconf >/dev/null 2>&1;
+if command -v dconf >/dev/null 2>&1; then
   KEYS_CONFIG="$DOTFILES_DIR/gnome/keybindings.ini"
 
   if [ -f "$KEYS_CONFIG" ]; then
     loginfo "Restoring GNOME keybindings..."
+    
+    # IMPORTANTE: A barra no final é necessária
+    dconf load /org/gnome/ < "$KEYS_CONFIG"
 
-    dconf load /org/gnome < "$KEYS_CONFIG"
-
-    logsuccess "keybindings restored!"
+    if [ $? -eq 0 ]; then
+        logsuccess "Keybindings restored!"
     else
-      logwarn "keyrings file not found at $KEYS_CONFIG"
+        logwarn "Failed to restore keybindings. Check if file format matches dconf dump."
+    fi
+  else
+      logwarn "Keybindings file not found at $KEYS_CONFIG"
   fi
 else
   logwarn "dconf command not found. Skipping GNOME setup."
