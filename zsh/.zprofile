@@ -11,6 +11,3 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 # NVM
 export NVM_DIR="$HOME/.nvm"
 
-# Env
-[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
-
