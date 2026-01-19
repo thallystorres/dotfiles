@@ -71,20 +71,19 @@ function U.wrap_in_chars(left, right)
     return
   end
 
-  local end_line =
-    vim.api.nvim_buf_get_lines(bufnr, end_row - 1, end_row, false)[1]
-  if end_col > #end_line then
-    end_col = #end_line
-  end
+  local end_line = vim.api.nvim_buf_get_lines(bufnr, end_row - 1, end_row, false)[1] or ""
+  local limit_col = math.min(end_col + 1, #end_line)
 
   local lines = vim.api.nvim_buf_get_text(
     bufnr,
     start_row - 1,
     start_col,
     end_row - 1,
-    end_col + 1,
+    limit_col,
     {}
   )
+
+  if #lines == 0 then return end
 
   lines[1] = left .. lines[1]
   lines[#lines] = lines[#lines] .. right
@@ -94,7 +93,7 @@ function U.wrap_in_chars(left, right)
     start_row - 1,
     start_col,
     end_row - 1,
-    end_col + 1,
+    limit_col,
     lines
   )
 
