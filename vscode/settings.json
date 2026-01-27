@@ -31,10 +31,10 @@
   "code-runner.preserveFocus": false,
   "code-runner.executorMap": {
     "python": "clear ; python -u",
-    "typescript": "npx tsx"
+    "typescript": "npx tsx",
   },
   "tailwindCSS.experimental.classRegex": [
-    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
   ],
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -47,10 +47,10 @@
       "diffEditor.ignoreTrimWhitespace": "never",
       "editor.defaultColorDecorators": "never",
       "editor.formatOnType": "always",
-      "editor.wordBasedSuggestions": "never"
-    }
+      "editor.wordBasedSuggestions": "never",
+    },
   },
-  "python.defaultInterpreterPath": "./.venv/bin/python",
+  "python.defaultInterpreterPath": "/bin/python",
   "python.analysis.autoImportCompletions": true,
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.terminal.activateEnvironment": true,
@@ -62,27 +62,27 @@
   "emmet.includeLanguages": {
     "django-html": "html",
     "javascript": "javascriptreact",
-    "typescript": "typescriptreact"
+    "typescript": "typescriptreact",
   },
 
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
   },
 
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[xml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[svg]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[django-html]": {
     "editor.formatOnSave": false,
@@ -90,7 +90,7 @@
     "editor.quickSuggestions": {
       "other": true,
       "comments": true,
-      "strings": true
-    }
-  }
+      "strings": true,
+    },
+  },
 }

@@ -332,6 +332,7 @@ link_file "$DOTFILES_DIR/fastfetch" "$HOME/.config/fastfetch"
 if [ -d "$HOME/.config/Code/User" ]; then
     link_file "$DOTFILES_DIR/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
     link_file "$DOTFILES_DIR/vscode/keybindings.json" "$HOME/.config/Code/User/keybindings.json"
+    ./vscode/install_extensions.sh
 fi
 
 # Vim
