@@ -1,0 +1,18 @@
+# scoop-packages.txt
+# CLI dev tools installed by windows/bootstrap.ps1 via scoop (user-scope, no admin).
+# These mirror the repo's Brewfile so the same names work on the Windows PATH.
+bat
+fastfetch
+fd
+fzf
+eza
+zoxide
+delta
+lazygit
+yazi
+just
+make
+less
+ripgrep
+neovim
+7zip

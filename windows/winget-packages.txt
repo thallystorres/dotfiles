@@ -1,0 +1,16 @@
+# winget-packages.txt
+# Package IDs installed by windows/bootstrap.ps1 via winget.
+# One ID per line; lines starting with '#' are ignored.
+#
+# NOTE: Cursor (Anysphere) is NOT on winget. Download the installer from
+# https://cursor.com/download, then run cursor\windows-profile.ps1 to apply
+# the repo config. Install it once and the apply step is automatic.
+
+Microsoft.WindowsTerminal
+Git.Git
+Microsoft.VisualStudioCode
+Microsoft.PowerToys
+AutoHotkey.AutoHotkey
+Zoom.Zoom
+JetBrains.Toolbox
+Bitwarden.Bitwarden

@@ -1,0 +1,84 @@
+{
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "defaultProfile": "{ac034c36-3828-4680-889c-16c6c39fe3ad}",
+  "copyOnSelect": true,
+  "copyFormatting": "none",
+  "useAcrylicInTabRow": true,
+  "theme": "dark",
+  "profiles": {
+    "defaults": {
+      "colorScheme": "Kanagawa Wave",
+      "font": {
+        "face": "JetBrains Mono",
+        "size": 14,
+        "weight": "normal"
+      },
+      "opacity": 90,
+      "useAcrylic": true,
+      "padding": "16, 8, 16, 8",
+      "cursorShape": "filledBox",
+      "antialiasingMode": "cleartype",
+      "scrollbarState": "hidden"
+    },
+    "list": [
+      {
+        "guid": "{ac034c36-3828-4680-889c-16c6c39fe3ad}",
+        "name": "Fedora 43 (WSL)",
+        "commandline": "wsl.exe -d Fedora43",
+        "startingDirectory": "~",
+        "icon": "🪼"
+      },
+      {
+        "guid": "{61c4bbad-38f2-5c8c-9c92-7b999cc1c1c7}",
+        "name": "PowerShell",
+        "commandline": "powershell.exe -NoLogo",
+        "hidden": false
+      },
+      {
+        "guid": "{0caa0dad-35be-5f56-a8ff-af4111111111}",
+        "name": "Command Prompt",
+        "commandline": "%SystemRoot%\\System32\\cmd.exe",
+        "hidden": false
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "name": "Kanagawa Wave",
+      "background": "#1F1F28",
+      "foreground": "#DCDCBA",
+      "cursorColor": "#C8C093",
+      "selectionBackground": "#2D4F67",
+      "black": "#090618",
+      "red": "#C34043",
+      "green": "#76946A",
+      "yellow": "#C0A36E",
+      "blue": "#7E9CD8",
+      "purple": "#957FB8",
+      "cyan": "#6A9585",
+      "white": "#C8C093",
+      "brightBlack": "#727169",
+      "brightRed": "#E82424",
+      "brightGreen": "#98BB6C",
+      "brightYellow": "#E6C384",
+      "brightBlue": "#7AA2FF",
+      "brightPurple": "#D27E99",
+      "brightCyan": "#7FB5BA",
+      "brightWhite": "#DCDCBA"
+    }
+  ],
+  "actions": [
+    { "command": { "action": "copy", "singleLine": false }, "id": "User.Copy" },
+    { "command": "paste", "id": "User.Paste" },
+    { "command": { "action": "newTab" }, "keys": "ctrl+shift+t", "id": "User.NewTab" },
+    { "command": "closePane", "keys": "ctrl+shift+w" },
+    { "command": { "action": "splitPane", "split": "auto" }, "keys": "alt+shift+d" },
+    { "command": { "action": "moveFocus", "direction": "left" }, "keys": "alt+left" },
+    { "command": { "action": "moveFocus", "direction": "right" }, "keys": "alt+right" },
+    { "command": { "action": "moveFocus", "direction": "up" }, "keys": "alt+up" },
+    { "command": { "action": "moveFocus", "direction": "down" }, "keys": "alt+down" },
+    { "command": { "action": "adjustFontSize", "delta": 1 }, "keys": "ctrl+=" },
+    { "command": { "action": "adjustFontSize", "delta": -1 }, "keys": "ctrl+-" }
+  ]
+}
