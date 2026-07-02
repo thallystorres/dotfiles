@@ -1,0 +1,27 @@
+# Cursor extensions — superset of ../vscode/extensions.txt plus Cursor-side
+# extras. This file is the single source of truth; run
+# `bash scripts/gen-extension-installer.sh cursor` to regenerate
+# install_extensions.sh from it, so the two never drift.
+albert.tabout
+bradlc.vscode-tailwindcss
+chadalen.vscode-jetbrains-icon-theme
+charliermarsh.ruff
+ecmel.vscode-html-css
+esbenp.prettier-vscode
+fallenmax.mithril-emmet
+formulahendry.code-runner
+github.copilot
+github.copilot-chat
+ms-python.debugpy
+ms-python.python
+ms-python.vscode-pylance
+ms-python.vscode-python-envs
+omthemes.omthemes
+redhat.vscode-yaml
+ritwickdey.liveserver
+tamasfe.even-better-toml
+vscodevim.vim
+yzhang.markdown-all-in-one
+# Cursor-native extras (kept commented-out; uncomment to enable):
+# anysphere.cursor-always-local
+# wix.vscode-import-cost
