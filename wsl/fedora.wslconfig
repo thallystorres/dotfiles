@@ -1,0 +1,13 @@
+# .wslconfig — global WSL2 settings, dropped at %USERPROFILE%\.wslconfig
+# by setup-wsl.ps1. Tweak memory/CPU to taste; these are conservative
+# defaults suitable for a desktop dev box. Lines are plain INI.
+
+[wsl2]
+memory=12GB
+processors=8
+swap=4GB
+localhostForwarding=true
+guiApplications=true
+
+[experimental]
+sparseVhd=true
