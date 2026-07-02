@@ -35,6 +35,8 @@ dotfiles/
 │   ├── scoop-packages.txt
 │   ├── windows-terminal/settings.json
 │   ├── powershell/Microsoft.PowerShell_profile.ps1
+│   ├── ahk/gnome-keybindings.ahk     # AutoHotkey v2 — maps gnome/keybindings.ini
+│   ├── enable-super-l.ps1            # one-off admin helper to free Win+L
 │   └── INSTALL-windows.md
 ├── wsl/                          # NEW
 │   ├── setup-wsl.ps1
@@ -188,7 +190,7 @@ Single numbered document from a blank machine:
 
 - No migration of app data (Obsidian vaults, browser profiles, Bitwarden state) — synced by their own apps.
 - No Windows desktop theming (no Rainmeter/ExplorerPatcher). Only Windows Terminal + Cursor get a theme.
-- No AHK parity mapping of GNOME keybindings — flagged as future work.
+- GNOME-keybindings parity on Windows is **in scope**: `windows/ahk/gnome-keybindings.ahk` (AutoHotkey v2) replicates `gnome/keybindings.ini`; `windows/enable-super-l.ps1` is a one-off admin helper that frees `Win+L` so `Super+l` can snap right. `Super+q` takes over locking via the Windows `LockWorkStation` API.
 - No DSL rewrites; configs stay shell + JSON + Lua.
 
 ## 11. Order of work
