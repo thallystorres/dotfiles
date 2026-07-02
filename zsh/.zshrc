@@ -1,8 +1,10 @@
 #!/usr/bin/env zsh
 # vim: set filetype=zsh :
 
-# This will load all the other files
-source "${HOME}/dotfiles/zsh/config/use_this_to_load"
+# Resolve the dotfiles dir from the symlink target of this file, so this
+# works whether the repo lives at ~/dotfiles or elsewhere.
+DOTFILES_DIR="${0:A:h:h}"
+source "${DOTFILES_DIR}/zsh/config/use_this_to_load"
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -15,3 +17,6 @@ function y() {
 eval "$(zoxide init zsh)"
 
 . "$HOME/.local/bin/env"
+
+# opencode
+[[ -d "$HOME/.opencode/bin" ]] && export PATH="$HOME/.opencode/bin:$PATH"

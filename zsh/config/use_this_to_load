@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 # vim: set filetype=zsh :
-ZSH_CONFIG_DIR="$HOME/dotfiles/zsh/config"
+# Resolve from this file's own real path so it works regardless of $HOME layout
+ZSH_CONFIG_DIR="${0:A:h}"
+# Keep DOTFILES_DIR in sync for downstream scripts that read it
+DOTFILES_DIR="${ZSH_CONFIG_DIR:h:h}"
 
 CONFIG_CONFIG_FILE="${ZSH_CONFIG_DIR}/config"
 FUNCTIONS_CONFIG_FILE="${ZSH_CONFIG_DIR}/functions"

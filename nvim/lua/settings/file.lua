@@ -4,7 +4,7 @@ vim.opt.fileencoding = "utf-8"
 
 vim.filetype.add({
   pattern = {
-    ["/Users/thallys/dotfiles/zsh/config/*"] = "sh",
-    ["/Users/thallys/dotfiles/zsh/ghostty/*"] = "sh",
+    [vim.fn.expand("~/dotfiles/zsh/config/") .. "*"] = "sh",
+    [vim.fn.expand("~/dotfiles/zsh/ghostty/") .. "*"] = "sh",
   },
 })
