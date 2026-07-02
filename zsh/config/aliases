@@ -54,10 +54,15 @@ alias ..='z ..'
 command -v fastfetch >/dev/null && alias ff='fastfetch'
 command -v micro >/dev/null && alias nano='micro'
 
-alias mkdir='mkdir -pv'
+# alias mkdir='mkdir -pv'
 
 # Tree ignore .git, __pycache__, node_modules, .venv, dist, .DS_Store
 alias tr="tree -C -I '__pycache__|node_modules|.git|.venv|dist|.DS_Store|*.egg*'"
 
 # Misc
 alias aliasconf='micro ~/dotfiles/zsh/config/aliases'
+bt(){
+  rfkill unblock bluetooth
+  bluetoothctl power on
+  bluetoothctl connect 54:84:50:1A:A1:39
+}

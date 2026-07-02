@@ -1,6 +1,7 @@
 [init]
 	defaultBranch = main
 [core]
+  pager = delta
   editor = nvim
   repositoryformatversion = 0
   filemode = true
@@ -10,3 +11,8 @@
   precomposeunicode = true
 [pull]
   rebase=true
+[push]
+	autoSetupRemote = true
+[delta]
+  navigate = true
+  line-numbers = true
